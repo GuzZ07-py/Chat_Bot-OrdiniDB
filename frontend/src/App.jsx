@@ -4,29 +4,30 @@ export default function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
- 
+  async function sendMessage() {
+    if (!input.trim()) return;
 
-async function sendMessage() {
-  if (!input.trim()) return;
+    const userMsg = { role: "user", text: input };
+    const userid = "user123";
+    
+    try {
+      const res = await fetch("https://chat-bot-ordinidb-1.onrender.com/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: input, user_id: userid })
+      });
 
-  const userMsg = { role: "user", text: input };
-  const userid="user123";
-  //const API_URL=import.meta.env.VITE_API_URL || "http://localhost:8000";
-  const res = await fetch("https://chat-bot-ordinidb-1.onrender.com/chat/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message: input, user_id: userid })
-  });
+      const data = await res.json();
+      const botMsg = { role: "bot", text: data.response };
 
-  const data = await res.json();
-
-  const botMsg = { role: "bot", text: data.response };
-
-  setMessages([...messages, userMsg, botMsg]);
-  setInput("");
-}
+      setMessages([...messages, userMsg, botMsg]);
+      setInput("");
+    } catch (error) {
+      console.error("Errore:", error);
+    }
+  }
 
   return (
     <div style={styles.container}>
