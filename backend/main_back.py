@@ -3,6 +3,8 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import google.generativeai as genai
 import mysql.connector
+import os
+
 api_key = os.getenv("GEMINI_API_KEY")
 
 if not api_key:
@@ -33,10 +35,10 @@ def Invio_risposta(response,chat):
 
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="root",
-        database="ordini_db_tesina"
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
     )
 
 def esegui_query(query: str):
