@@ -3,7 +3,12 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import google.generativeai as genai
 import mysql.connector
-genai.configure(api_key="AIzaSyAh_xHfNUCbCmic9CwArAqW6Y8ibyE7nbE")
+api_key = os.getenv("GEMINI_API_KEY")
+
+if not api_key:
+    print("ERRORE: La chiave GEMINI_API_KEY non è stata configurata!")
+else:
+    genai.configure(api_key=api_key)
 
 def Invio_risposta(response,chat):
     for part in response.candidates[0].content.parts:
