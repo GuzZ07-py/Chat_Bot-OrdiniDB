@@ -11,7 +11,8 @@ async function sendMessage() {
 
   const userMsg = { role: "user", text: input };
   const userid="user123";
-  const res = await fetch("http://localhost:8000/chat", {
+  const API_URL=import.meta.enc.VITE_API_URL || "http://localhost:8000";
+  const res = await fetch('${API_URL}/chat', {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
