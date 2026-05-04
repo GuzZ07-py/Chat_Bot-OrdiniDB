@@ -3,4 +3,4 @@ uvicorn
 gunicorn
 pydantic
 google-generativeai
-mysql-connector-python
+
