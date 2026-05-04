@@ -12,7 +12,7 @@ async function sendMessage() {
   const userMsg = { role: "user", text: input };
   const userid="user123";
   const API_URL=import.meta.env.VITE_API_URL || "http://localhost:8000";
-  const res = await fetch('${API_URL}/chat', {
+  const res = await fetch(`${API_URL}/chat`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
