@@ -2,5 +2,4 @@ fastapi
 uvicorn
 gunicorn
 pydantic
-google-generativeai
-
+google-generativeai2
