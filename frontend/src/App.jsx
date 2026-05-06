@@ -11,7 +11,7 @@ export default function App() {
     const userid = "user123";
     
     try {
-      const res = await fetch("https://chat-bot-ordinidb-1.onrender.com/chat", {
+      const res = await fetch("https://chat-bot-ordinidb-2.onrender.com/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
