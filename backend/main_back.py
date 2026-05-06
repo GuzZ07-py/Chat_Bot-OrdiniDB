@@ -26,7 +26,7 @@ class ChatMessage(BaseModel):
 # Inizializzazione modello
 model = genai.GenerativeModel("gemini-2.5-pro")
 
-@app.post("/chat")
+@app.get("/")
 def home():
     return {"status": "Chatbot Online"}
 
