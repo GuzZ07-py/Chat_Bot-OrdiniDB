@@ -3,13 +3,13 @@ import { useState } from "react";
 export default function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const [isTyping, setIsTyping] = useState(true);
+  const [isTyping, setIsTyping] = useState(false);
   async function sendMessage() {
     if (!input.trim()) return;
 
     const userMsg = { role: "user", text: input };
     const userid = "user123";
-    
+    setIsTyping(true);
     try {
       const res = await fetch("https://chat-bot-ordinidb-2.onrender.com/chat", {
         method: "POST",
@@ -22,7 +22,7 @@ export default function App() {
       const data = await res.json();
       const botMsg = { role: "bot", text: data.response };
 
-      setisTyping(false);
+      setIsTyping(false);
 
       setMessages([...messages, userMsg, botMsg]);
       setInput("");
@@ -112,6 +112,7 @@ const styles = {
      width: "8px",
      height: "8px",
      borderRadius: "50%",
-     backgroundColor: "#888"
+     backgroundColor: "#888",
+     display: "inline-block"
   }
 };
