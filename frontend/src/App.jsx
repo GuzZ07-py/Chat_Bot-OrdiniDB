@@ -28,7 +28,7 @@ export default function App() {
       console.error("Errore:", error);
     }
   }
-
+  
   return (
     <div style={styles.container}>
       <h2>Chat Demo</h2>
@@ -46,6 +46,22 @@ export default function App() {
             {m.text}
           </div>
         ))}
+        {isTyping &&(
+          <div
+            style={{
+              ...styles.message,
+              alignSelf: "flex-start",
+              background: "#EEE",
+              display: "flex",
+              gap: "6px",
+              padding: "12px 16px"
+            }}
+            >
+              <span style={styles.dot}></span>
+              <span style={styles.dot}></span>
+              <span style={styles.dot}></span>
+          </div>
+        )}
       </div>
 
       <div style={styles.inputArea}>
@@ -89,5 +105,13 @@ const styles = {
   input: {
     flex: 1,
     padding: "8px"
+  },
+  dot: {
+     width: "8px",
+     height: "8px",
+     borderRadius: "50%",
+     backgroundColor: "#888"
+
+
   }
 };
