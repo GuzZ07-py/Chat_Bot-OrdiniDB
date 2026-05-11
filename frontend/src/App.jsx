@@ -3,7 +3,7 @@ import { useState } from "react";
 export default function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-
+  const [isTyping, setIsTyping] = useState(true);
   async function sendMessage() {
     if (!input.trim()) return;
 
@@ -21,6 +21,8 @@ export default function App() {
 
       const data = await res.json();
       const botMsg = { role: "bot", text: data.response };
+
+      setisTyping(false);
 
       setMessages([...messages, userMsg, botMsg]);
       setInput("");
@@ -111,7 +113,5 @@ const styles = {
      height: "8px",
      borderRadius: "50%",
      backgroundColor: "#888"
-
-
   }
 };
