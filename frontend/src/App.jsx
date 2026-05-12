@@ -62,7 +62,7 @@ export default function App() {
             style={{
               ...styles.message,
               alignSelf: "flex-start",
-              background: "#EEE",
+              background: "#334155",
               display: "flex",
               gap: "6px",
               padding: "12px 16px"
@@ -107,7 +107,7 @@ const styles = {
     height: "500px",
     overflowY: "auto",
     marginBottom: "15px",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#ffffff",
     boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
   },
   message: {
@@ -118,7 +118,8 @@ const styles = {
     fontSize: "15px",
     lineHeight: "1.5",
     boxShadow: "0 1px 2px rgba(0,0,0,0.05)", // Ombra leggerissima sotto i messaggi
-    wordBreak: "break-word" // Evita che il testo lungo esca dalla bolla
+    wordBreak: "break-word", // Evita che il testo lungo esca dalla bolla
+    backgroundColor: "#2563EB"
   },
   inputArea: {
     display: "flex",
