@@ -83,7 +83,7 @@ export default function App() {
           onKeyDown={invio_automatico}
           placeholder="Scrivi un messaggio..."
         />
-        <button onClick={sendMessage}> <ArrowUp size={18}></ArrowUp></button>
+        <button style={styles.button} onClick={sendMessage}> <ArrowUp size={18}></ArrowUp></button>
       </div>
     </div>
   );
@@ -94,7 +94,7 @@ const styles = {
     maxWidth: "800px",
     margin: "50px auto",
     fontFamily: "Arial",
-    padding: "0 20px"
+    padding: "0 20px" //spazio a lato
   },
   chatBox: {
     display: "flex",
@@ -109,18 +109,45 @@ const styles = {
     boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
   },
   message: {
-    padding: "8px",
-    borderRadius: "8px",
-    margin: "5px 0",
-    maxWidth: "70%"
+    padding: "12px 16px",
+    borderRadius: "18px", // Bordi molto smussati per un look "bubble"
+    margin: "8px 0",
+    maxWidth: "75%",      // Un po' più largo visto che il contenitore è aumentato
+    fontSize: "15px",
+    lineHeight: "1.5",
+    boxShadow: "0 1px 2px rgba(0,0,0,0.05)", // Ombra leggerissima sotto i messaggi
+    wordBreak: "break-word" // Evita che il testo lungo esca dalla bolla
   },
   inputArea: {
     display: "flex",
-    gap: "5px"
+    gap: "10px",          // Più spazio tra input e bottone
+    padding: "10px",
+    backgroundColor: "white",
+    borderRadius: "30px", // Barra di input arrotondata (stile WhatsApp/Telegram)
+    border: "1px solid #ddd",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
   },
   input: {
     flex: 1,
-    padding: "8px"
+    padding: "10px 15px",
+    border: "none",       // Rimosso bordo interno perché c'è quello dell'inputArea
+    outline: "none",      // Rimosso il contorno blu quando clicchi
+    fontSize: "16px",
+    backgroundColor: "transparent"
+  },
+  button: {
+    backgroundColor: "#007AFF", // Blu stile iOS o scegli il tuo colore
+    color: "white",
+    border: "none",
+    borderRadius: "50%",
+    width: "40px",
+    height: "40px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    transition: "background 0.2s"
+
   }
   /*dot: {
      width: "8px",
