@@ -82,6 +82,7 @@ export default function App() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={invio_automatico}
           placeholder="Scrivi un messaggio..."
+          
         />
         <button style={styles.button} onClick={sendMessage}> <ArrowUp size={18}></ArrowUp></button>
       </div>
@@ -94,7 +95,8 @@ const styles = {
     maxWidth: "800px",
     margin: "50px auto",
     fontFamily: "Arial",
-    padding: "0 20px" //spazio a lato
+    padding: "0 20px", //spazio a lato
+    backgroundColor: "#0F172A"
   },
   chatBox: {
     display: "flex",
@@ -133,7 +135,8 @@ const styles = {
     border: "none",       // Rimosso bordo interno perché c'è quello dell'inputArea
     outline: "none",      // Rimosso il contorno blu quando clicchi
     fontSize: "16px",
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
+    color: "#000000"
   },
   button: {
     backgroundColor: "#007AFF", // Blu stile iOS o scegli il tuo colore
