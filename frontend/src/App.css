@@ -17,6 +17,11 @@
   }
 }
 
+.body {
+  background-color: "#EAF4FF";
+}
+
+
 .hero {
   position: relative;
 
@@ -159,6 +164,10 @@
   @media (max-width: 1024px) {
     height: 48px;
   }
+}
+
+input::placeholder {
+  color: #000000;
 }
 
 .ticks {
