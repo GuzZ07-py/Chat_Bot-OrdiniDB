@@ -51,7 +51,7 @@ export default function App() {
             style={{
               ...styles.message,
               alignSelf: m.role === "user" ? "flex-end" : "flex-start",
-              background: m.role === "user" ? "#DCF8C6" : "#EEE"
+              background: m.role === "user" ? "#2563EB" : "#334155"
             }}
           >
             {m.text}
@@ -96,7 +96,7 @@ const styles = {
     margin: "50px auto",
     fontFamily: "Arial",
     padding: "0 20px", //spazio a lato
-    backgroundColor: "#0F172A"
+    backgroundColor: "#8e8ac5"
   },
   chatBox: {
     display: "flex",
@@ -119,7 +119,6 @@ const styles = {
     lineHeight: "1.5",
     boxShadow: "0 1px 2px rgba(0,0,0,0.05)", // Ombra leggerissima sotto i messaggi
     wordBreak: "break-word", // Evita che il testo lungo esca dalla bolla
-    backgroundColor: "#2563EB"
   },
   inputArea: {
     display: "flex",
