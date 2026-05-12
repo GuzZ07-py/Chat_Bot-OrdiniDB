@@ -29,8 +29,13 @@ export default function App() {
     } catch (error) {
       console.error("Errore:", error);
     }
+    
   }
   
+  const invio_automatico = (e) => {
+    if (e.key === "Enter")
+      sendMessage();
+  }
   return (
     <div style={styles.container}>
       <h2>Chat Demo</h2>
@@ -71,6 +76,7 @@ export default function App() {
           style={styles.input}
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={invio_automatico}
           placeholder="Scrivi un messaggio..."
         />
         <button onClick={sendMessage}>Invia</button>
