@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import "./app.css";
 export default function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -59,9 +59,9 @@ export default function App() {
               padding: "12px 16px"
             }}
             >
-              <span style={styles.dot}></span>
-              <span style={styles.dot}></span>
-              <span style={styles.dot}></span>
+              <span className="dot"></span>
+              <span className="dot"></span>
+              <span className="dot"></span>
           </div>
         )}
       </div>
@@ -107,12 +107,16 @@ const styles = {
   input: {
     flex: 1,
     padding: "8px"
-  },
-  dot: {
+  }
+  /*dot: {
      width: "8px",
      height: "8px",
      borderRadius: "50%",
      backgroundColor: "#888",
-     display: "inline-block"
-  }
+     display: "inline-block",
+
+     animation: "bounce 1.4 infinite ease-in-out"
+  },*/
+  
+
 };
