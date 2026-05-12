@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { ArrowUp } from "lucide-react";
+import { Brain } from 'lucide-react';
 
 export default function App() {
   const [messages, setMessages] = useState([]);
@@ -40,7 +41,8 @@ export default function App() {
   }
   return (
     <div style={styles.container}>
-      <h2>Chat Demo</h2>
+      <Brain size={20}></Brain>
+      <h2>Assistente AI E-Commerce</h2>
 
       <div style={styles.chatBox}>
         {messages.map((m, i) => (
