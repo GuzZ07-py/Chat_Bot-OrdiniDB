@@ -51,7 +51,8 @@ export default function App() {
             style={{
               ...styles.message,
               alignSelf: m.role === "user" ? "flex-end" : "flex-start",
-              background: m.role === "user" ? "#2563EB" : "#334155"
+              background: m.role === "user" ? "#2563EB" : "#F1F5F9",
+              color: m.role === "user" ? "white" : "#0F172A"
             }}
           >
             {m.text}
@@ -96,12 +97,12 @@ const styles = {
     margin: "50px auto",
     fontFamily: "Arial",
     padding: "0 20px", //spazio a lato
-    backgroundColor: "#8e8ac5"
+    backgroundColor: "#EAF4FF"
   },
   chatBox: {
     display: "flex",
     flexDirection: "column",
-    border: "1px solid #e0e0e0",
+    border: "1px solid #D6E6F5",
     borderRadius: "20px",
     padding: "20px",
     height: "500px",
@@ -124,9 +125,9 @@ const styles = {
     display: "flex",
     gap: "10px",          // Più spazio tra input e bottone
     padding: "10px",
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
     borderRadius: "30px", // Barra di input arrotondata (stile WhatsApp/Telegram)
-    border: "1px solid #ddd",
+    border: "1px solid #D6E6F5",
     boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
   },
   input: {
@@ -136,10 +137,10 @@ const styles = {
     outline: "none",      // Rimosso il contorno blu quando clicchi
     fontSize: "16px",
     backgroundColor: "transparent",
-    color: "#000000"
+    color: "#0F172A"
   },
   button: {
-    backgroundColor: "#007AFF", // Blu stile iOS o scegli il tuo colore
+    backgroundColor: "#2563EB", // Blu stile iOS o scegli il tuo colore
     color: "white",
     border: "none",
     borderRadius: "50%",
