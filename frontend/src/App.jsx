@@ -42,7 +42,7 @@ export default function App() {
   return (
     <div style={styles.container}>
       <Brain size={25}></Brain>
-      <h2>Assistente AI E-Commerce</h2>
+      <h2 style={styles.title}>Assistente AI E-Commerce</h2>
 
       <div style={styles.chatBox}>
         {messages.map((m, i) => (
@@ -98,6 +98,12 @@ const styles = {
     fontFamily: "Arial",
     padding: "0 20px", //spazio a lato
     backgroundColor: "#EAF4FF"
+  },
+  title: {
+     color: "#0F172A",
+    fontSize: "22px",
+    fontWeight: "600",
+    marginBottom: "10px"
   },
   chatBox: {
     display: "flex",
