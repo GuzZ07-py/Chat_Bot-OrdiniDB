@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./src/app.css";
+import "./src/App.css";
 export default function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
