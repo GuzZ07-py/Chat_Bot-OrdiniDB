@@ -41,7 +41,7 @@ export default function App() {
   }
   return (
     <div style={styles.container}>
-      <Brain size={20}></Brain>
+      <Brain size={25}></Brain>
       <h2>Assistente AI E-Commerce</h2>
 
       <div style={styles.chatBox}>
@@ -91,18 +91,22 @@ export default function App() {
 
 const styles = {
   container: {
-    maxWidth: "500px",
+    maxWidth: "800px",
     margin: "50px auto",
-    fontFamily: "Arial"
+    fontFamily: "Arial",
+    padding: "0 20px"
   },
   chatBox: {
     display: "flex",
     flexDirection: "column",
-    border: "1px solid #ccc",
-    padding: "10px",
-    height: "300px",
+    border: "1px solid #e0e0e0",
+    borderRadius: "20px",
+    padding: "20px",
+    height: "500px",
     overflowY: "auto",
-    marginBottom: "10px"
+    marginBottom: "15px",
+    backgroundColor: "#f9f9f9",
+    boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
   },
   message: {
     padding: "8px",
