@@ -1,5 +1,7 @@
 import { useState } from "react";
 import "./App.css";
+import { ArrowUp } from "lucide-react";
+
 export default function App() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -79,7 +81,7 @@ export default function App() {
           onKeyDown={invio_automatico}
           placeholder="Scrivi un messaggio..."
         />
-        <button onClick={sendMessage}>Invia</button>
+        <button onClick={sendMessage}> <ArrowUp size={18}></ArrowUp></button>
       </div>
     </div>
   );
