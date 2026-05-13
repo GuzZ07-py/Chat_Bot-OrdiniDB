@@ -40,6 +40,7 @@ export default function App() {
       sendMessage();
   }
   return (
+    
     <div style={styles.container}>
       <Brain size={25}></Brain>
       <h2 style={styles.title}>Assistente AI E-Commerce</h2>
@@ -88,6 +89,7 @@ export default function App() {
         <button style={styles.button} onClick={sendMessage}> <ArrowUp size={18}></ArrowUp></button>
       </div>
     </div>
+   
   );
 }
 
