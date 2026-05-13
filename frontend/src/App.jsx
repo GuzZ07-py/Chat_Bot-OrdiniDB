@@ -116,7 +116,7 @@ export default function App() {
       <div style={styles.header}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <Brain size={30} color="#2563EB"/>
-          <h2 style={styles.title}>Assistente AI E-Commerce</h2>
+          <h2 style={styles.title}>Assistente AI E-Commerce   </h2>
         </div>
         <div style={styles.userInfo}>
         
@@ -125,7 +125,7 @@ export default function App() {
             onClick={() => { setUser(null); setMessages([]); }}
             //title="Esci"
           >
-            <LogOut size={20}  color="#000000"/>
+            <LogOut size={20} color="#000000"/>
           </button>
         </div>
       </div>
