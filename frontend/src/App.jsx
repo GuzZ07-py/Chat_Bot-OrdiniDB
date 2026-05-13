@@ -185,7 +185,7 @@ const styles = {
     margin: "50px auto",
     fontFamily: "Arial",
     padding: "0 20px",
-    backgroundColor: "#b0e0e6",
+    backgroundColor: "#bcebf3",
   },
   header: {
     display: "flex",
