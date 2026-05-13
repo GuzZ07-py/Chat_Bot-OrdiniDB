@@ -1,49 +1,134 @@
 import { useState } from "react";
 import "./App.css";
-import { ArrowUp } from "lucide-react";
-import { Brain } from 'lucide-react';
+import { ArrowUp, Brain, LogOut } from "lucide-react";
 
+// ─── Utenti di esempio (sostituisci con una vera chiamata API) ───────────────
+const FAKE_USERS = [
+  { email: "user@demo.it", password: "1234", name: "Mario" },
+];
+
+// ─── Schermata di Login ──────────────────────────────────────────────────────
+function LoginPage({ onLogin }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleLogin = () => {
+    const found = FAKE_USERS.find(
+      (u) => u.email === email && u.password === password
+    );
+    if (found) {
+      onLogin(found);
+    } else {
+      setError("Email o password non corretti.");
+    }
+  };
+
+  return (
+    <div style={styles.container}>
+      <Brain size={30} color="#2563EB" />
+      <h2 style={styles.title}>Assistente AI E-Commerce</h2>
+
+      <div style={styles.loginBox}>
+        <p style={styles.loginTitle}>Accedi</p>
+
+        <div style={styles.field}>
+          <label style={styles.label}>Email</label>
+          <input
+            style={styles.input}
+            type="email"
+            placeholder="user@demo.it"
+            value={email}
+            onChange={(e) => { setEmail(e.target.value); setError(""); }}
+            onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+          />
+        </div>
+
+        <div style={styles.field}>
+          <label style={styles.label}>Password</label>
+          <input
+            style={styles.input}
+            type="password"
+            placeholder="••••"
+            value={password}
+            onChange={(e) => { setPassword(e.target.value); setError(""); }}
+            onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+          />
+        </div>
+
+        {error && <p style={styles.error}>{error}</p>}
+
+        <button style={styles.loginBtn} onClick={handleLogin}>
+          Accedi
+        </button>
+
+        <p style={styles.hint}>Demo: user@demo.it / 1234</p>
+      </div>
+    </div>
+  );
+}
+
+// ─── App principale ──────────────────────────────────────────────────────────
 export default function App() {
+  const [user, setUser] = useState(null); // null = non autenticato
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+
+  // Se non loggato, mostra login
+  if (!user) {
+    return <LoginPage onLogin={(userData) => setUser(userData)} />;
+  }
+
   async function sendMessage() {
     if (!input.trim()) return;
 
     const userMsg = { role: "user", text: input };
-    const userid = "user123";
+    const userid = user.email; // usa l'email reale dell'utente
     setIsTyping(true);
+
     try {
       const res = await fetch("https://chat-bot-ordinidb-2.onrender.com/chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ message: input, user_id: userid })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input, user_id: userid }),
       });
 
       const data = await res.json();
       const botMsg = { role: "bot", text: data.response };
 
       setIsTyping(false);
-
       setMessages([...messages, userMsg, botMsg]);
       setInput("");
     } catch (error) {
       console.error("Errore:", error);
+      setIsTyping(false);
     }
-    
   }
-  
+
   const invio_automatico = (e) => {
-    if (e.key === "Enter")
-      sendMessage();
-  }
+    if (e.key === "Enter") sendMessage();
+  };
+
   return (
-    
     <div style={styles.container}>
-      <Brain size={25}></Brain>
-      <h2 style={styles.title}>Assistente AI E-Commerce</h2>
+      {/* Header con nome utente e logout */}
+      <div style={styles.header}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <Brain size={25} />
+          <h2 style={styles.title}>Assistente AI E-Commerce</h2>
+        </div>
+        <div style={styles.userInfo}>
+          <span style={styles.userName}>👤 {user.name}</span>
+          <button
+            style={styles.logoutBtn}
+            onClick={() => { setUser(null); setMessages([]); }}
+            title="Esci"
+          >
+            <LogOut size={16} />
+          </button>
+        </div>
+      </div>
 
       <div style={styles.chatBox}>
         {messages.map((m, i) => (
@@ -53,13 +138,13 @@ export default function App() {
               ...styles.message,
               alignSelf: m.role === "user" ? "flex-end" : "flex-start",
               background: m.role === "user" ? "#2563EB" : "#F1F5F9",
-              color: m.role === "user" ? "white" : "#0F172A"
+              color: m.role === "user" ? "white" : "#0F172A",
             }}
           >
             {m.text}
           </div>
         ))}
-        {isTyping &&(
+        {isTyping && (
           <div
             style={{
               ...styles.message,
@@ -67,12 +152,12 @@ export default function App() {
               background: "#334155",
               display: "flex",
               gap: "6px",
-              padding: "12px 16px"
+              padding: "12px 16px",
             }}
-            >
-              <span className="dot"></span>
-              <span className="dot"></span>
-              <span className="dot"></span>
+          >
+            <span className="dot"></span>
+            <span className="dot"></span>
+            <span className="dot"></span>
           </div>
         )}
       </div>
@@ -84,29 +169,102 @@ export default function App() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={invio_automatico}
           placeholder="Scrivi un messaggio..."
-          
         />
-        <button style={styles.button} onClick={sendMessage}> <ArrowUp size={18}></ArrowUp></button>
+        <button style={styles.button} onClick={sendMessage}>
+          <ArrowUp size={18} />
+        </button>
       </div>
     </div>
-   
   );
 }
 
+// ─── Stili ───────────────────────────────────────────────────────────────────
 const styles = {
   container: {
     maxWidth: "800px",
     margin: "50px auto",
     fontFamily: "Arial",
-    padding: "0 20px", //spazio a lato
-    backgroundColor: "#b0e0e6"
+    padding: "0 20px",
+    backgroundColor: "#b0e0e6",
+  },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: "10px",
   },
   title: {
-     color: "#0F172A",
+    color: "#0F172A",
     fontSize: "22px",
     fontWeight: "600",
-    marginBottom: "10px"
+    margin: 0,
   },
+  userInfo: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
+  userName: {
+    fontSize: "14px",
+    color: "#0F172A",
+  },
+  logoutBtn: {
+    background: "transparent",
+    border: "1px solid #94a3b8",
+    borderRadius: "8px",
+    padding: "4px 8px",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    color: "#0F172A",
+  },
+  // Login
+  loginBox: {
+    background: "#ffffff",
+    borderRadius: "20px",
+    padding: "32px",
+    maxWidth: "380px",
+    margin: "0 auto",
+    boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+  },
+  loginTitle: {
+    fontSize: "20px",
+    fontWeight: "600",
+    color: "#0F172A",
+    marginBottom: "20px",
+  },
+  field: {
+    marginBottom: "14px",
+  },
+  label: {
+    display: "block",
+    fontSize: "13px",
+    color: "#475569",
+    marginBottom: "5px",
+  },
+  error: {
+    fontSize: "13px",
+    color: "#dc2626",
+    marginBottom: "10px",
+  },
+  hint: {
+    fontSize: "12px",
+    color: "#94a3b8",
+    textAlign: "center",
+    marginTop: "12px",
+  },
+  loginBtn: {
+    width: "100%",
+    padding: "11px",
+    backgroundColor: "#2563EB",
+    color: "white",
+    border: "none",
+    borderRadius: "12px",
+    fontSize: "15px",
+    fontWeight: "600",
+    cursor: "pointer",
+  },
+  // Chat
   chatBox: {
     display: "flex",
     flexDirection: "column",
@@ -117,38 +275,38 @@ const styles = {
     overflowY: "auto",
     marginBottom: "15px",
     backgroundColor: "#ffffff",
-    boxShadow: "0 4px 15px rgba(0,0,0,0.1)"
+    boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
   },
   message: {
     padding: "12px 16px",
-    borderRadius: "18px", // Bordi molto smussati per un look "bubble"
+    borderRadius: "18px",
     margin: "8px 0",
-    maxWidth: "75%",      // Un po' più largo visto che il contenitore è aumentato
+    maxWidth: "75%",
     fontSize: "15px",
     lineHeight: "1.5",
-    boxShadow: "0 1px 2px rgba(0,0,0,0.05)", // Ombra leggerissima sotto i messaggi
-    wordBreak: "break-word", // Evita che il testo lungo esca dalla bolla
+    boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+    wordBreak: "break-word",
   },
   inputArea: {
     display: "flex",
-    gap: "10px",          // Più spazio tra input e bottone
+    gap: "10px",
     padding: "10px",
     backgroundColor: "#FFFFFF",
-    borderRadius: "30px", // Barra di input arrotondata (stile WhatsApp/Telegram)
+    borderRadius: "30px",
     border: "1px solid #D6E6F5",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
+    boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
   },
   input: {
     flex: 1,
     padding: "10px 15px",
-    border: "none",       // Rimosso bordo interno perché c'è quello dell'inputArea
-    outline: "none",      // Rimosso il contorno blu quando clicchi
+    border: "none",
+    outline: "none",
     fontSize: "16px",
     backgroundColor: "transparent",
-    color: "#0F172A"
+    color: "#0F172A",
   },
   button: {
-    backgroundColor: "#2563EB", // Blu stile iOS o scegli il tuo colore
+    backgroundColor: "#2563EB",
     color: "white",
     border: "none",
     borderRadius: "50%",
@@ -158,18 +316,6 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     cursor: "pointer",
-    transition: "background 0.2s"
-
-  }
-  /*dot: {
-     width: "8px",
-     height: "8px",
-     borderRadius: "50%",
-     backgroundColor: "#888",
-     display: "inline-block",
-
-     animation: "bounce 1.4 infinite ease-in-out"
-  },*/
-  
-
+    transition: "background 0.2s",
+  },
 };
