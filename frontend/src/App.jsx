@@ -115,17 +115,17 @@ export default function App() {
       {/* Header con nome utente e logout */}
       <div style={styles.header}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <Brain size={25} />
+          <Brain size={30} color="#2563EB"/>
           <h2 style={styles.title}>Assistente AI E-Commerce</h2>
         </div>
         <div style={styles.userInfo}>
-          <span style={styles.userName}> 👤 {user.name}</span>
+        
           <button
             style={styles.logoutBtn}
             onClick={() => { setUser(null); setMessages([]); }}
             title="Esci"
           >
-            <LogOut size={16} />
+  
           </button>
         </div>
       </div>
