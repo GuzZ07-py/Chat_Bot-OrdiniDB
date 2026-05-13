@@ -17,11 +17,6 @@
   }
 }
 
-.body {
-  background-color: "#EAF4FF";
-}
-
-
 .hero {
   position: relative;
 
@@ -166,10 +161,6 @@
   }
 }
 
-input::placeholder {
-  color: #000000;
-}
-
 .ticks {
   position: relative;
   width: 100%;
@@ -222,4 +213,10 @@ input::placeholder {
     transform: scale(1.2);
     opacity: 1;
   }
+}
+
+body {
+  margin: 0;
+  background-color: #92bbe7;
+  min-height: 100vh;
 }
