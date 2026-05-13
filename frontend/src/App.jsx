@@ -119,7 +119,7 @@ export default function App() {
           <h2 style={styles.title}>Assistente AI E-Commerce</h2>
         </div>
         <div style={styles.userInfo}>
-          <span style={styles.userName}>👤 {user.name}</span>
+          <span style={styles.userName}> 👤 {user.name}</span>
           <button
             style={styles.logoutBtn}
             onClick={() => { setUser(null); setMessages([]); }}
@@ -238,8 +238,8 @@ const styles = {
   },
   label: {
     display: "block",
-    fontSize: "13px",
-    color: "#475569",
+    fontSize: "16px",
+    color: "#0F172A",
     marginBottom: "5px",
   },
   error: {
