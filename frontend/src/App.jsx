@@ -123,9 +123,9 @@ export default function App() {
           <button
             style={styles.logoutBtn}
             onClick={() => { setUser(null); setMessages([]); }}
-            title="Esci"
+            //title="Esci"
           >
-  
+            <LogOut size={20}  color="#000000"/>
           </button>
         </div>
       </div>
