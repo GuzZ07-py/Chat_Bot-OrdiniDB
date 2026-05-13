@@ -99,7 +99,7 @@ const styles = {
     margin: "50px auto",
     fontFamily: "Arial",
     padding: "0 20px", //spazio a lato
-    backgroundColor: "#EAF4FF"
+    backgroundColor: "#b0e0e6"
   },
   title: {
      color: "#0F172A",
