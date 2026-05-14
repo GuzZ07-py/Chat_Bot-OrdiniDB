@@ -77,7 +77,23 @@ JOIN corrieri c
 ON c.id = o.corriere_id
 GROUP BY c.nome;
 ```
+- "Quanti ordini  ha fatto il cliente Franco Viganò?":
+```sql
+SELECT COUNT(*) FROM ordini o JOIN clienti c ON c.id = o.cliente_id WHERE c.nome = 'Franco Viganò';
+```
 
+- "Quale è il cliente che ha speso più in totale?":
+
+```sql
+SELECT c.nome
+FROM clienti c
+JOIN ordini o ON c.id = o.cliente_id
+JOIN ordini_prodotti op ON o.id = op.ordine_id
+JOIN prodotti p ON op.prodotto_id = p.id
+GROUP BY c.id, c.nome
+ORDER BY SUM(p.prezzo * op.quantita) DESC
+LIMIT 1;
+```
 
 # DATA VISUALIZATION:
 
