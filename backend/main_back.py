@@ -100,17 +100,17 @@ SYSTEM_PROMT="""
     - "Quale è la quantita rimasta nel magazzino del prodotto  Smartphone X10" -> SELECT   quantita_in_magazzino FROM prodotti WHERE nome='Smartphone X10'
     
     
-    
-
-
-    Se NON serve il database e la richiesta non riguarda un ordine:
-    -rispondi normalmente
-    
-    
-    Rispondi sempre in modo professionale 
+    Se la richiesta rigurda un ordine rispondi sempre in modo professionale 
     - Inizia con : "Salve Gentile Cliente..."
-    - Chiudi con : GG +39 123231312
-    - Rispondi anche alle richieste nelle altre lingue, usando la lingua utilizzata dal mittente"""
+    - Chiudi con : Assistenza di UniLira , Tel: +39 123231312 
+   
+    Se invece la richiesta NON rigurda un ordine rispondi con:
+    - Rispondi Normalmente senza Gentile Cliente e senza Assistenza UniLira
+
+    In ogni risposta rispondi in modo personale:
+    - Rispondi anche alle richieste nelle altre lingue, usando la lingua utilizzata dal mittente
+    
+    """
 
 TOOLS=[ {
         "function_declarations": [
