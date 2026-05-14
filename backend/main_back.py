@@ -11,6 +11,8 @@ api_key = os.getenv("GEMINI_API_KEY")
 
 genai.configure(api_key=api_key)
 
+with open("guida_database" , "r" , encoding="utf-8") as f:
+    database_guida= f.read()
     
 def Invio_risposta(response,chat):
     for part in response.candidates[0].content.parts:
@@ -68,46 +70,16 @@ SYSTEM_PROMT="""
     - NON inventare dati
     - genera SOLO query SQL SELECT valide
                             
-    Rispondi usando gli ordini contenuti nel database
+    Usa questa guida del Database: {database_guida}
     
-    Il database è strutturato in questo modo: 
-
-    TABELLE:
-
-    clienti(id, nome, email, indirizzo)
-    corrieri(id, nome)
-    carte(id, cliente_id, last4, circuito, scadenza, token)
-    ordini(id, data_spedizione, data_arrivo, tracking, stato, origine, cliente_id, corriere_id, carta_id)
-    prodotti(id,nome,descrizione,quantita_in_magazzino,prezzo)
-    ordini_prodotti(ordine_id,prodotto_id,quantita)
-                                 
-    RELAZIONI:
-                                 
-    - ordini.cliente_id → clienti.id
-    - ordini.corriere_id → corrieri.id
-    - ordini.carta_id → carte.id
-    - ordini_prodotti.ordine_id -> ordini.id
-    - ordini_prodotti.prodotto_id -> prodotti.id
-
-    ESEMPI:
-
-    - " Chi è il corriere del mio ordine con ID 6" -> SELECT nome FROM corrieri c JOIN ordini o ON c.corriere_id = o.corriere_id WHERE o.id='ORD006'
-    
-    - "Tempo medio di spedizione del corriere Bartolini" -> SELECT AVG(data_arrivo - data_spedizione) FROM ordini JOIN corrieri ON ordini.corriere_id = corrieri.id WHERE corrieri.nome = 'Bartolini';
-    
-    - "Quale è il prezzo del mio prodotto con id 18" -> SELECT prezzo FROM prodotti p JOIN ordini_prodotto op ON op.prodotto_id=p.id AND op.ordine_id= 18
-
-    - "Quale è la quantita rimasta nel magazzino del prodotto  Smartphone X10" -> SELECT   quantita_in_magazzino FROM prodotti WHERE nome='Smartphone X10'
-    
-    
-    Se la richiesta rigurda un ordine rispondi sempre in modo professionale 
+    Se la richiesta rigurda un ordine:
     - Inizia con : "Salve Gentile Cliente..."
     - Chiudi con : Assistenza di UniLira , Tel: +39 123231312 
    
     Se invece la richiesta NON rigurda un ordine rispondi con:
     - Rispondi Normalmente senza Gentile Cliente e senza Assistenza UniLira
 
-    In ogni risposta rispondi in modo personale:
+    In OGNI risposta rispondi in modo professionale:
     - Rispondi anche alle richieste nelle altre lingue, usando la lingua utilizzata dal mittente
     
     """
