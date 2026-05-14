@@ -63,8 +63,8 @@ def esegui_query(query: str):
     finally:
         conn.close()
 
-SYSTEM_PROMT="""
-    Se il messaggio che ricevi riguarda un ordine del databse:
+SYSTEM_PROMT=f"""
+    Se il messaggio che ricevi riguarda un ordine del database:
     - DEVI OBBLIGATORIAMENTE chiamare la funzione esegui_query
     - NON puoi rispondere senza usare la funzione
     - NON inventare dati
