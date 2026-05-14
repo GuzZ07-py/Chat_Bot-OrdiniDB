@@ -11,7 +11,7 @@ api_key = os.getenv("GEMINI_API_KEY")
 
 genai.configure(api_key=api_key)
 
-with open("guida_database" , "r" , encoding="utf-8") as f:
+with open("guida_database.md" , "r" , encoding="utf-8") as f:
     database_guida= f.read()
     
 def Invio_risposta(response,chat):
