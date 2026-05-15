@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { ArrowUp, Brain, LogOut } from "lucide-react";
-
+import { Chart as ChartJS } from "chart.js/auto";
 // ─── Utenti di esempio (sostituisci con una vera chiamata API) ───────────────
 const FAKE_USERS = [
   { email: "user@demo.it", password: "1234", name: "Mario" },
@@ -112,7 +112,7 @@ export default function App() {
 
   return (
     <div style={styles.container}>
-      {/* Header con nome utente e logout */}
+      {/* Header  con logout */}
       <div style={styles.header}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <Brain size={30} color="#2563EB"/>
@@ -128,8 +128,8 @@ export default function App() {
             <LogOut size={20} color="#000000"/>
           </button>
         </div>
-      </div>
-
+      <div style={styles.mainContent}>
+      
       <div style={styles.chatBox}>
         {messages.map((m, i) => (
           <div
@@ -144,6 +144,10 @@ export default function App() {
             {m.text}
           </div>
         ))}
+        </div>
+        <div style={styles.grafico}>Grafico Su richiesta</div>
+        </div> {/* chiusura div maincontent */}
+
         {isTyping && (
           <div
             style={{
@@ -181,12 +185,22 @@ export default function App() {
 // ─── Stili ───────────────────────────────────────────────────────────────────
 const styles = {
   container: {
-    maxWidth: "800px",
+    maxWidth: "1100px",
     margin: "50px auto",
     fontFamily: "Arial",
     padding: "0 20px",
-    backgroundColor: "#bcebf3",
+    backgroundColor: "#cbe3e7",
   },
+  grafico: {
+    flex: 1,
+    height: "500px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "20px",
+    padding: "20px"
+  },
+
   header: {
     display: "flex",
     alignItems: "center",
@@ -264,8 +278,15 @@ const styles = {
     fontWeight: "600",
     cursor: "pointer",
   },
+  mainContent: {
+    display: "flex",
+    gap: "20px",              // Spazio tra chat e grafico
+    alignItems: "flex-start", // Allinea in alto
+    width: "100%",
+  },
   // Chat
   chatBox: {
+    flex: 2,
     display: "flex",
     flexDirection: "column",
     border: "1px solid #D6E6F5",
