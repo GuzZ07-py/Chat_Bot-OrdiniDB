@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import { ArrowUp, Brain, LogOut } from "lucide-react";
 import { Chart as ChartJS } from "chart.js/auto";
+import { Line,Bar,Pie} from "react-chartjs-2";
 // ─── Utenti di esempio (sostituisci con una vera chiamata API) ───────────────
 const FAKE_USERS = [
   { email: "user@demo.it", password: "1234", name: "Mario" },

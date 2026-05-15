@@ -24,16 +24,53 @@ def Invio_risposta(response,chat):
                 query = call.args["query"]
 
                 risultato = esegui_query(query)
-                
+                tipo_grafico= call.args.get(
+                    "tipo_grafico_consigliato"
+                )
+
+                asse_x= call.args.get("asse_x")
+                asse_y= call.args.get("asse_y")
+
                 response=chat.send_message({
                     "function_response":{
                         "name": "esegui_query",
                         "response": {"result":risultato}
                     }
                 })
-                return {"response": response.text}
-    #se è domanda normale
-    return{"response": response.text}
+
+                return {
+
+                    "response": response.text,
+
+                    # nuovi campi
+                    "chart": {
+                        "enabled": bool(tipo_grafico),
+
+                        "type": (
+                            tipo_grafico
+                            .replace(" chart", "")
+                            if tipo_grafico
+                            else None
+                        ),
+
+                        "xAxis": asse_x,
+                        "yAxis": asse_y,
+
+                        "data": risultato
+                    }
+                }
+        if getattr(part, "text", None):
+            return {
+                "response": part.text,
+                "chart": {
+                    "enabled": False
+                }
+            }
+                
+
+
+        
+        
 
 DATABASE_URL=os.getenv("DATABASE_URL")
 
