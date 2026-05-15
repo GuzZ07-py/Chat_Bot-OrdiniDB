@@ -184,11 +184,11 @@ export default function App() {
 // ─── Stili ───────────────────────────────────────────────────────────────────
 const styles = {
   container: {
-    maxWidth: "1100px",
+    maxWidth: "1300px",
     margin: "50px auto",
     fontFamily: "Arial",
     padding: "0 20px",
-    backgroundColor: "#cbe3e7",
+    backgroundColor: "#bcebf3",
   },
   grafico: {
     flex: 1,
