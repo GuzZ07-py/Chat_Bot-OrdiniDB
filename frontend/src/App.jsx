@@ -110,76 +110,75 @@ export default function App() {
     if (e.key === "Enter") sendMessage();
   };
 
-  return (
-    <div style={styles.container}>
-      {/* Header  con logout */}
-      <div style={styles.header}>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <Brain size={30} color="#2563EB"/>
-          <h2 style={styles.title}>Assistente AI E-Commerce   </h2>
-        </div>
-        <div style={styles.userInfo}>
-        
-          <button
-            style={styles.logoutBtn}
-            onClick={() => { setUser(null); setMessages([]); }}
-            //title="Esci"
-          >
-            <LogOut size={20} color="#000000"/>
-          </button>
-        </div>
-      <div style={styles.mainContent}>
-      
-      <div style={styles.chatBox}>
-        {messages.map((m, i) => (
-          <div
-            key={i}
-            style={{
-              ...styles.message,
-              alignSelf: m.role === "user" ? "flex-end" : "flex-start",
-              background: m.role === "user" ? "#2563EB" : "#F1F5F9",
-              color: m.role === "user" ? "white" : "#0F172A",
-            }}
-          >
-            {m.text}
-          </div>
-        ))}
-        </div>
-        <div style={styles.grafico}>Grafico Su richiesta</div>
-        </div> {/* chiusura div maincontent */}
-
-        {isTyping && (
-          <div
-            style={{
-              ...styles.message,
-              alignSelf: "flex-start",
-              background: "#334155",
-              display: "flex",
-              gap: "6px",
-              padding: "12px 16px",
-            }}
-          >
-            <span className="dot"></span>
-            <span className="dot"></span>
-            <span className="dot"></span>
-          </div>
-        )}
+ return (
+  <div style={styles.container}>
+    
+    {/* 1. HEADER (Separato dal resto) */}
+    <div style={styles.header}>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <Brain size={30} color="#2563EB"/>
+        <h2 style={styles.title}>Assistente AI E-Commerce</h2>
       </div>
-
-      <div style={styles.inputArea}>
-        <input
-          style={styles.input}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={invio_automatico}
-          placeholder="Scrivi un messaggio..."
-        />
-        <button style={styles.button} onClick={sendMessage}>
-          <ArrowUp size={18} />
+      <div style={styles.userInfo}>
+        <button
+          style={styles.logoutBtn}
+          onClick={() => { setUser(null); setMessages([]); }}
+        >
+          <LogOut size={20} color="#000000"/>
         </button>
       </div>
-    </div>
-  );
+    </div> {/* FINE HEADER */}
+
+    {/* 2. AREA CENTRALE (Chat + Grafico) */}
+    <div style={{...styles.mainContent, flexWrap: "wrap"}}>
+      
+      {/* Colonna Sinistra: Chat */}
+      <div style={{ flex: "2 1 400px", display: "flex", flexDirection: "column", gap: "10px" }}>
+        <div style={styles.chatBox}>
+          {messages.map((m, i) => (
+            <div
+              key={i}
+              style={{
+                ...styles.message,
+                alignSelf: m.role === "user" ? "flex-end" : "flex-start",
+                background: m.role === "user" ? "#2563EB" : "#F1F5F9",
+                color: m.role === "user" ? "white" : "#0F172A",
+              }}
+            >
+              {m.text}
+            </div>
+          ))}
+          
+          {isTyping && (
+            <div style={{ ...styles.message, alignSelf: "flex-start", background: "#334155", display: "flex", gap: "6px" }}>
+              <span className="dot"></span><span className="dot"></span><span className="dot"></span>
+            </div>
+          )}
+        </div>
+
+        {/* INPUT AREA: Ora è agganciata sotto la ChatBox */}
+        <div style={styles.inputArea}>
+          <input
+            style={styles.input}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={invio_automatico}
+            placeholder="Scrivi un messaggio..."
+          />
+          <button style={styles.button} onClick={sendMessage}>
+            <ArrowUp size={18} />
+          </button>
+        </div>
+      </div>
+
+      {/* 3. Colonna Destra: Grafico */}
+      <div style={styles.grafico}>
+        <p style={{ color: "#94a3b8" }}>Grafico Su richiesta</p>
+      </div>
+
+    </div> {/* FINE MAINCONTENT */}
+  </div>
+);
 }
 
 // ─── Stili ───────────────────────────────────────────────────────────────────
