@@ -38,4 +38,3 @@ export default function DynamicChart({ chart })
 
 }
 
-export default DynamicChart;
