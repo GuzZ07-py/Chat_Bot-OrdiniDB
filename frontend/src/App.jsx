@@ -8,7 +8,7 @@ ChartJS.register(CategoryScale,LinearScale,PointElement,LineElement,BarElement,A
   Tooltip,
   Legend
 );
-import DynamicChart from "./DynamicChart";
+import DynamicChart from "./DynamicChart.js";
 // ─── Utenti di esempio (sostituisci con una vera chiamata API) ───────────────
 const FAKE_USERS = [
   { email: "user@demo.it", password: "1234", name: "Mario" },
