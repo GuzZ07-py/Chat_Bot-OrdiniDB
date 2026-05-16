@@ -19,7 +19,7 @@ def Invio_risposta(response,chat):
         if hasattr(part, "function_call") and part.function_call:
 
             call = part.function_call
-            #print("argomenti: ", call.args)
+            print("argomenti: ", call.args)
             if call.name == "esegui_query":
                 query = call.args["query"]
 
