@@ -1,8 +1,14 @@
 import { useState } from "react";
 import "./App.css";
 import { ArrowUp, Brain, LogOut } from "lucide-react";
-import { Chart as ChartJS } from "chart.js/auto";
-import { Line,Bar,Pie} from "react-chartjs-2";
+import {Chart as ChartJS,CategoryScale,LinearScale,PointElement,LineElement,BarElement,ArcElement,Tooltip, Legend
+} from "chart.js";
+
+ChartJS.register(CategoryScale,LinearScale,PointElement,LineElement,BarElement,ArcElement,
+  Tooltip,
+  Legend
+);
+import DynamicChart from "./DynamicChart";
 // ─── Utenti di esempio (sostituisci con una vera chiamata API) ───────────────
 const FAKE_USERS = [
   { email: "user@demo.it", password: "1234", name: "Mario" },
@@ -69,6 +75,13 @@ function LoginPage({ onLogin }) {
   );
 }
 
+
+
+
+
+
+
+
 // ─── App principale ──────────────────────────────────────────────────────────
 export default function App() {
   const [user, setUser] = useState(null); // null = non autenticato
@@ -96,7 +109,7 @@ export default function App() {
       });
 
       const data = await res.json();
-      const botMsg = { role: "bot", text: data.response };
+      const botMsg = { role: "bot", text: data.response, chart: data.chart };
 
       setIsTyping(false);
       setMessages([...messages, userMsg, botMsg]);
@@ -173,9 +186,27 @@ export default function App() {
       </div>
 
       {/* 3. Colonna Destra: Grafico */}
-      <div style={styles.grafico}>
+      
+        {
+  messages.map((m, i) => (
+    <div key={i}>
+
+      <p>{m.text}</p>
+
+      {m.chart?.enabled && (
+        <div style={styles.grafico}>
+        <DynamicChart
+          chart={m.chart}
+        />
         <p style={{ color: "#94a3b8" }}>Grafico Su richiesta</p>
-      </div>
+        </div>
+      )}
+
+    </div>
+  ))
+}
+        
+      
 
     </div> {/* FINE MAINCONTENT */}
   </div>

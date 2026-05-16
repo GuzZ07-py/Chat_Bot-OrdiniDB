@@ -24,6 +24,7 @@ def Invio_risposta(response,chat):
                 query = call.args["query"]
 
                 risultato = esegui_query(query)
+                
                 tipo_grafico= call.args.get(
                     "tipo_grafico_consigliato"
                 )
