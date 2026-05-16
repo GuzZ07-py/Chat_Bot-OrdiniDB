@@ -191,7 +191,7 @@ export default function App() {
   messages.map((m, i) => (
     <div key={i}>
 
-      <p>{m.text}</p>
+      {/*<p>{m.text}</p>*/}
 
       {m.chart?.enabled && (
         <div style={styles.grafico}>
