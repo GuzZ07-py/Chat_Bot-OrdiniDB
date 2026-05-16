@@ -97,17 +97,26 @@ LIMIT 1;
 
 # DATA VISUALIZATION:
 
-Se l'utente chiede un grafico o un andamento:
+Se l'utente chiede :
+-andamento
+-confronto
+-distribuzione percentuale
+-grafico
+
+DEVI chiamare la funzione esegui_query includendo nel JSON:
+1. query SQL
+2. tipo grafico consigliato
+3. asse X
+4. asse Y
+
+Regole:
 
 - andamento temporale -> line chart
 - confronto categorie -> bar chart
 - percentuali -> pie chart
 
-Includi nel JSON:
-1. query SQL
-2. tipo grafico consigliato
-3. asse X
-4. asse Y
+
+
 
 
 # SQL RULES

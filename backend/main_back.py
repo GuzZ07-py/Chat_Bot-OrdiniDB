@@ -125,14 +125,38 @@ TOOLS=[ {
         "function_declarations": [
             {
                 "name": "esegui_query",
-                "description": "Esegue una query SQL SELECT sul database ordini",
+                "description": "Esegue query SQL PostgreSQL e può suggerire grafici",
                 "parameters": {
                     "type": "object",
+
                     "properties": {
+
                         "query": {
                             "type": "string",
-                            "description": "Query SQL da eseguire"
+                            "description": "Query SQL SELECT PostgreSQL"
+                        },
+
+                        "tipo_grafico_consigliato": {
+                            "type": "string",
+                            "enum": [
+                                "line chart",
+                                "pie chart",
+                                "bar chart"
+                            ], 
+                            
+                            "description": "Grafico consigliato"
+                        },
+
+                        "asse_x" : {
+                            "type": "string",
+                            "description": "Campo Asse x"
+                        },
+
+                        "asse_y" : {
+                            "type": "string",
+                            "description": "Campo Asse y"
                         }
+
                     },
                     "required": ["query"]
                 }
