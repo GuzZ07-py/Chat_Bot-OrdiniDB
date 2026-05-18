@@ -39,6 +39,9 @@ def Invio_risposta(response,chat):
                     }
                 })
 
+
+                asse_x = asse_x.split(".")[-1] if asse_x else None
+                asse_y = asse_y.split(".")[-1] if asse_y else None
                 return {
 
                     "response": response.text,
@@ -48,15 +51,14 @@ def Invio_risposta(response,chat):
                         "enabled": bool(tipo_grafico),
 
                         "type": (
-                            tipo_grafico
-                            .replace(" chart", "")
+                            tipo_grafico.replace(" chart", "")
                             if tipo_grafico
                             else None
                         ),
 
                         "xAxis": asse_x,
                         "yAxis": asse_y,
-                        "data": risultato
+                        "data": risultato if risultato else []
                     }
                 }
         if getattr(part, "text", None):
@@ -96,7 +98,7 @@ def esegui_query(query: str):
                     record[col] = float(val) if val is not None else None
             result_dicts.append(record)
         
-        return result_dicts  # Gemini legge bene anche i dict
+        return result_dicts  
         
     except Exception as e:
         return f"Errore SQL: {e}"
