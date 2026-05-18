@@ -56,7 +56,6 @@ def Invio_risposta(response,chat):
 
                         "xAxis": asse_x,
                         "yAxis": asse_y,
-
                         "data": risultato
                     }
                 }
@@ -76,28 +75,31 @@ def Invio_risposta(response,chat):
 DATABASE_URL=os.getenv("DATABASE_URL")
 
 def esegui_query(query: str):
-    #sicurezza
     query_lower = query.lower()
-
     if not query_lower.strip().startswith("select"):
         return "Solo query SELECT consentite."
-    
-    #codice per query
     try:
-        conn=psycopg2.connect(DATABASE_URL)
-        cursor=conn.cursor()
-        
+        conn = psycopg2.connect(DATABASE_URL)
+        cursor = conn.cursor()
         cursor.execute(query)
-        result=cursor.fetchall()
-
+        rows = cursor.fetchall()
+        columns = [desc[0] for desc in cursor.description]
         
-        #print ("QUERY:",query)
+        # Lista di dizionari (per il grafico)
+        result_dicts = []
+        for row in rows:
+            record = {}
+            for col, val in zip(columns, row):
+                if hasattr(val, 'isoformat'):
+                    record[col] = val.isoformat()
+                else:
+                    record[col] = float(val) if val is not None else None
+            result_dicts.append(record)
         
-        return str(result)
-    
+        return result_dicts  # Gemini legge bene anche i dict
+        
     except Exception as e:
-        return f"Errore SQL:{e}"
-    
+        return f"Errore SQL: {e}"
     finally:
         conn.close()
 
@@ -197,7 +199,7 @@ async def chat(req: ChatRequest):
     
     user_id=req.user_id
     if user_id not in sessions: #salvo le sessioni, cosi ogni utente ha il suo contesto
-        sessions[user_id]=model.start_chat(enable_automatic_function_calling=True)
+        sessions[user_id]=model.start_chat(enable_automatic_function_calling=False)
     
     chat = sessions[user_id]
 

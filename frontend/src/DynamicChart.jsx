@@ -6,11 +6,6 @@ export default function DynamicChart({ chart })
     labels: chart.data.map(
       item => item[chart.xAxis]
     ),
-
-    labels: chart.data.map(
-      item => item[chart.xAxis]
-    ),
-
     datasets: [
       {
         label: chart.yAxis,
