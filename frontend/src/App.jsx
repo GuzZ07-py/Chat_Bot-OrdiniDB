@@ -125,9 +125,9 @@ export default function App() {
   };
 
  return (
-  <div style={styles.container}>
+   <div style={styles.container}>
     
-    {/* 1. HEADER (Separato dal resto) */}
+    {/*HEADER */}
     <div style={styles.header}>
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <Brain size={30} color="#2563EB"/>
@@ -141,13 +141,13 @@ export default function App() {
           <LogOut size={20} color="#000000"/>
         </button>
       </div>
-    </div> {/* FINE HEADER */}
+    </div>
 
-    {/* 2. AREA CENTRALE (Chat + Grafico) */}
+    {/*blocco centrale */}
     <div style={{...styles.mainContent, flexWrap: "wrap"}}>
       
-      {/* Colonna Sinistra: Chat */}
-      <div style={{ flex: "2 1 400px", display: "flex", flexDirection: "column", gap: "10px" }}>
+      {/* Chat */}
+      <div style={{ flex: "1 1 100%", display: "flex", flexDirection: "column", gap: "10px" }}>
         <div style={styles.chatBox}>
           {messages.map((m, i) => (
             <div
@@ -170,7 +170,7 @@ export default function App() {
           )}
         </div>
 
-        {/* INPUT AREA: Ora è agganciata sotto la ChatBox */}
+        {/* zona input */}
         <div style={styles.inputArea}>
           <input
             style={styles.input}
@@ -185,33 +185,26 @@ export default function App() {
         </div>
       </div>
 
-      {/* 3. Colonna Destra: Grafico */}
-      
-        {
-  messages.map((m, i) => (
-    <div key={i}>
+    </div> ì
 
-      {/*<p>{m.text}</p>*/}
-
-      {m.chart?.enabled && (
-        <div style={styles.grafico}>
-        <DynamicChart
-          chart={m.chart}
-        />
-        <p style={{ color: "#000000" }}></p>
-        </div>
-      )}
-
-    </div>
-  ))
+    {/* grafico sotto la chat */}
+    {messages.some((m) => m.chart?.enabled) && (
+      <div style={styles.graficiArea}>
+        {messages.map((m, i) =>
+          m.chart?.enabled ? (
+            <div key={i} style={styles.grafico}>
+              <DynamicChart chart={m.chart} />
+            </div>
+          ) : null
+        )}
+      </div>
+    )}
+  </div>
+);
 }
         
       
 
-    </div> {/* FINE MAINCONTENT */}
-  </div>
-);
-}
 
 // ─── Stili ───────────────────────────────────────────────────────────────────
 const styles = {
@@ -223,16 +216,24 @@ const styles = {
     backgroundColor: "#bcebf3",
   },
   grafico: {
-    display: "flex",
-    flex_direction: "column",
+    width: "100%",
     height: "500px",
     display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "20px",
-    padding: "20px"
+    padding: "20px",
+    backgroundColor: "#ffffff",
+     boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
   },
-
+  graficoArea: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px",
+    marginTop: "20px",
+    width: "100%",
+  },
   header: {
     display: "flex",
     alignItems: "center",
