@@ -94,8 +94,10 @@ def esegui_query(query: str):
             for col, val in zip(columns, row):
                 if hasattr(val, 'isoformat'):
                     record[col] = val.isoformat()
+                elif isinstance(val, (int, float)):
+                    record[col] = float(val)
                 else:
-                    record[col] = float(val) if val is not None else None
+                    record[col] = val
             result_dicts.append(record)
         
         return result_dicts  
