@@ -185,7 +185,7 @@ export default function App() {
         </div>
       </div>
 
-    </div> ì
+    </div> 
 
     {/* grafico sotto la chat */}
     {messages.some((m) => m.chart?.enabled) && (
@@ -217,7 +217,8 @@ const styles = {
   },
   grafico: {
     width: "100%",
-    height: "500px",
+    height: "300px",
+    margin: "0 auto",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
