@@ -198,7 +198,7 @@ export default function App() {
         <DynamicChart
           chart={m.chart}
         />
-        <p style={{ color: "#94a3b8" }}>Grafico Su richiesta</p>
+        <p style={{ color: "#000000" }}></p>
         </div>
       )}
 
