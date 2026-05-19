@@ -12,14 +12,31 @@ export default function DynamicChart({ chart })
 
         data: chart.data.map(
           item => item[chart.yAxis]
-        )
+        ),
+
+        backgroundColor: [
+            "#032b68"
+        ],
+        borderColor: "#000000",
+        borderWidth: 2
       }
     ]
   };
+
+  const options = {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: "Grafico Generato: " 
+      }
+    }
+  };
+
    switch (chart.type) {
 
     case "line":
-      return <Line data={chartData} />;
+      return <Line data={chartData} options={options}/>;
 
     case "bar":
       return <Bar data={chartData} />;
