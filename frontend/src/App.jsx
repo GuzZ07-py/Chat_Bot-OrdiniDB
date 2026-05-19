@@ -232,7 +232,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "20px",
-    marginTop: "20px",
+    marginTop: "60px",
     width: "100%",
   },
   header: {
