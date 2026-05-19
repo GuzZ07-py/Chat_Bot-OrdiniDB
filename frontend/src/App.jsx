@@ -223,7 +223,8 @@ const styles = {
     backgroundColor: "#bcebf3",
   },
   grafico: {
-    flex: 1,
+    display: "flex",
+    flex_direction: "column",
     height: "500px",
     display: "flex",
     justifyContent: "center",
