@@ -274,6 +274,7 @@ const styles = {
     maxWidth: "380px",
     margin: "0 auto",
     boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+    marginTop : "30px",
   },
   loginTitle: {
     fontSize: "20px",
