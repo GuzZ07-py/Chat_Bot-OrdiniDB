@@ -228,7 +228,7 @@ const styles = {
     backgroundColor: "#ffffff",
      boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
   },
-  graficoArea: {
+  graficiArea: {
     display: "flex",
     flexDirection: "column",
     gap: "20px",
