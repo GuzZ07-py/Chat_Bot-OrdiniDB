@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 import google.generativeai as genai
 import os
-import google.generativeai as genai
 import psycopg2
 
 # Recupero chiave dalle varibile impostate su Render,come anche per le credenziali per accedere al database su Supabase
