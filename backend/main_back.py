@@ -73,14 +73,14 @@ def Invio_risposta(response,chat):
         
         
 
-DATABASE_URL=os.getenv("DATABASE_URL")
+DATABASE_URL=os.getenv("DATABASE_URL") #RECUPERTO URL
 
 def esegui_query(query: str):
     query_lower = query.lower()
     if not query_lower.strip().startswith("select"):
         return "Solo query SELECT consentite."
     try:
-        conn = psycopg2.connect(DATABASE_URL)
+        conn = psycopg2.connect(DATABASE_URL) #APERTURA CONNESSIONE
         cursor = conn.cursor()
         cursor.execute(query)
         rows = cursor.fetchall()
@@ -176,9 +176,9 @@ model = genai.GenerativeModel(model_name="gemini-2.5-pro",
 
 
 
-app = FastAPI()
+app = FastAPI() #CREAZIONE CANALE COMUNICAZIONE
 
-app.add_middleware(
+app.add_middleware( #PERMESSI PER LA COMUNICAZIONE
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
@@ -188,7 +188,7 @@ app.add_middleware(
 
 sessions={}
 
-class ChatRequest(BaseModel):
+class ChatRequest(BaseModel): #RICHESTE CHE IL MESSAGGIO DEVE RISPETTARE
     message: str
     user_id: str
 
@@ -197,7 +197,7 @@ def home():
     return {"status": "Chatbot Online"}
 
 
-@app.post("/chat")
+@app.post("/chat") #CREZIONE DELLA PORTA PRIVATA CHAT 
 async def chat(req: ChatRequest):
     
     user_id=req.user_id
