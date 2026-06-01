@@ -131,3 +131,4 @@ Regole:
 - Se NON viene richiesto un grafico restituisci SOLO SQL. 
 - Mai usare INSERT, UPDATE, DELETE o DROP.
 - Solo SELECT.
+

@@ -125,6 +125,10 @@ SYSTEM_PROMT= f"""
     In OGNI risposta rispondi in modo professionale:
     - Rispondi anche alle richieste nelle altre lingue, usando la lingua utilizzata dal mittente
     
+    In OGNI risposta a dei GRAFICI rispondi con:
+    - Il grafico è riportato sotto
+    - Ecco il grafico
+    
     """
 
 TOOLS=[ {
