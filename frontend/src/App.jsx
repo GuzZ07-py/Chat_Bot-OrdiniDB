@@ -339,6 +339,7 @@ const styles = {
     marginBottom: "15px",
     backgroundColor: "#ffffff",
     boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+    minHeight: "700px",
   },
   message: {
     padding: "12px 16px",
