@@ -97,7 +97,11 @@ export default function App() {
   async function sendMessage() {
     if (!input.trim()) return;
 
-    const userMsg = { role: "user", text: input };
+    const inputcorrente = input;
+
+    setInput("");
+
+    const userMsg = { role: "user", text: inputcorrente };
     const userid = user.email; // usa l'email reale dell'utente
     setIsTyping(true);
 
@@ -105,15 +109,14 @@ export default function App() {
       const res = await fetch("https://chat-bot-ordinidb-2.onrender.com/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input, user_id: userid }),
+        body: JSON.stringify({ message: inputcorrente, user_id: userid }),
       });
 
       const data = await res.json();
       const botMsg = { role: "bot", text: data.response, chart: data.chart };
 
       setIsTyping(false);
-      setMessages([...messages, userMsg, botMsg]);
-      setInput("");
+      setMessages(prev => [...prev, userMsg, botMsg]);
     } catch (error) {
       console.error("Errore:", error);
       setIsTyping(false);
