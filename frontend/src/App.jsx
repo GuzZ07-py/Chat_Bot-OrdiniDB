@@ -99,10 +99,14 @@ export default function App() {
 
     const inputcorrente = input;
 
-    setInput("");
-
     const userMsg = { role: "user", text: inputcorrente };
     const userid = user.email; // usa l'email reale dell'utente
+
+    setMessages(prev => [...prev,userMsg]);
+
+    setInput("");
+
+    
     setIsTyping(true);
 
     try {
@@ -116,7 +120,7 @@ export default function App() {
       const botMsg = { role: "bot", text: data.response, chart: data.chart };
 
       setIsTyping(false);
-      setMessages(prev => [...prev, userMsg, botMsg]);
+      setMessages(prev => [...prev,botMsg]);
     } catch (error) {
       console.error("Errore:", error);
       setIsTyping(false);
@@ -167,7 +171,7 @@ export default function App() {
           ))}
           
           {isTyping && (
-            <div style={{ ...styles.message, alignSelf: "flex-start", background: "#334155", display: "flex", gap: "6px" }}>
+            <div style={{ ...styles.message, alignSelf: "flex-start", background: "#F1F5F9", display: "flex", gap: "6px" }}>
               <span className="dot"></span><span className="dot"></span><span className="dot"></span>
             </div>
           )}
