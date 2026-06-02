@@ -39,7 +39,7 @@ export default function DynamicChart({ chart })
       return <Line data={chartData} options={options}/>;
 
     case "bar":
-      return <Bar data={chartData} />;
+      return <Bar data={chartData} options={options}/>;
 
     case "pie":
       return <Pie data={chartData} />;
