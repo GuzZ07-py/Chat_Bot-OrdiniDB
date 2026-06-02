@@ -54,7 +54,7 @@ function LoginPage({ onLogin }) {
           <input
             style={styles.input}
             type="email"
-            placeholder="user@demo.it"
+            placeholder="User Email"
             value={email}
             onChange={(e) => { setEmail(e.target.value); setError(""); }}
             onKeyDown={(e) => e.key === "Enter" && handleLogin()}
@@ -66,7 +66,7 @@ function LoginPage({ onLogin }) {
           <input
             style={styles.input}
             type="password"
-            placeholder="••••"
+            placeholder="Password"
             value={password}
             onChange={(e) => { setPassword(e.target.value); setError(""); }}
             onKeyDown={(e) => e.key === "Enter" && handleLogin()}
@@ -79,7 +79,7 @@ function LoginPage({ onLogin }) {
           Accedi
         </button>
 
-        <p style={styles.hint}>Demo: user@demo.it / 1234</p>
+        
       </div>
     </div>
   );
