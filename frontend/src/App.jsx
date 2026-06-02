@@ -44,7 +44,7 @@ function LoginPage({ onLogin }) {
   return (
     <div style={styles.container}>
       <Brain size={30} color="#2563EB" />
-      <h2 style={styles.title}>Assistente AI E-Commerce</h2>
+      <h2 style={styles.title}>Assistente Analisi Virtuale</h2>
 
       <div style={styles.loginBox}>
         <p style={styles.loginTitle}>Accedi</p>
@@ -148,7 +148,7 @@ export default function App() {
     <div style={styles.header}>
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         <Brain size={30} color="#2563EB"/>
-        <h2 style={styles.title}>Assistente AI E-Commerce</h2>
+        <h2 style={styles.title}>Assistente Analisi Virtuale</h2>
       </div>
       <div style={styles.userInfo}>
         <button
@@ -274,7 +274,7 @@ const styles = {
     color: "#0F172A",
   },
   logoutBtn: {
-    background: "transparent",
+   // background: "transparent",
     border: "1px solid #94a3b8",
     borderRadius: "8px",
     padding: "4px 8px",
