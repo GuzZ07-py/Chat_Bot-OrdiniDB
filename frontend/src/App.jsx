@@ -4,15 +4,16 @@ import { ArrowUp, Brain, LogOut } from "lucide-react";
 import {Chart as ChartJS,CategoryScale,LinearScale,PointElement,LineElement,BarElement,ArcElement,Tooltip, Legend
 } from "chart.js";
 
+import { supabase } from "./login.jsx";
+
 ChartJS.register(CategoryScale,LinearScale,PointElement,LineElement,BarElement,ArcElement,
   Tooltip,
   Legend
 );
 import DynamicChart from "./DynamicChart.jsx";
-// ─── Utenti di esempio (sostituisci con una vera chiamata API) ───────────────
-const FAKE_USERS = [
-  { email: "user@demo.it", password: "1234", name: "Mario" },
-];
+
+
+
 
 // ─── Schermata di Login ──────────────────────────────────────────────────────
 function LoginPage({ onLogin }) {
@@ -20,16 +21,25 @@ function LoginPage({ onLogin }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
-    const found = FAKE_USERS.find(
-      (u) => u.email === email && u.password === password
-    );
-    if (found) {
-      onLogin(found);
-    } else {
-      setError("Email o password non corretti.");
-    }
-  };
+  const handleLogin = async () => {
+    setError("");
+
+    const { data , error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+     if (error) {
+    setError("Email o password non corretti.");
+    return;
+  }
+
+  onLogin(data.user)
+
+
+
+  }
+
 
   return (
     <div style={styles.container}>
