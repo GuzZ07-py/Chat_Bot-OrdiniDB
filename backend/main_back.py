@@ -1,100 +1,194 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 import os
 import psycopg2
 import logging
-import traceback
-import json
+logging.basicConfig(level=logging.DEBUG)
 
-# =========================
-# 🔥 ULTRA DEBUG LOGGING
-# =========================
-logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s | %(levelname)s | %(message)s"
-)
-
-logger = logging.getLogger("GEMINI_DEBUG")
-
-# =========================
-# 🔐 API KEY DEBUG (SAFE)
-# =========================
+# Recupero chiave dalle varibile impostate su Render,come anche per le credenziali per accedere al database su Supabase
 api_key = os.getenv("GEMINI_API_KEY")
 
-logger.info("========== GEMINI AUTH DEBUG ==========")
+# Nuovo SDK google-genai: usa HTTPS/REST di default (niente gRPC)
+client = genai.Client(api_key=api_key)
 
-if api_key:
-    logger.info("API KEY STATUS: FOUND")
-    logger.info(f"API KEY LENGTH: {len(api_key)}")
-    logger.info(f"API KEY PREFIX: {api_key[:8]}...")
-else:
-    logger.error("API KEY STATUS: MISSING")
+with open("guida_database.md" , "r" , encoding="utf-8") as f:
+    database_guida= f.read()
+    
+def Invio_risposta(response,chat):
+    for part in response.candidates[0].content.parts:
+        if hasattr(part, "function_call") and part.function_call:
 
-genai.configure(api_key=api_key)
+            call = part.function_call
+            #print("argomenti: ", call.args)
+            if call.name == "esegui_query":
+                query = call.args["query"]
 
-# =========================
-# 📦 LOAD DB GUIDE
-# =========================
-with open("guida_database.md", "r", encoding="utf-8") as f:
-    database_guida = f.read()
+                risultato = esegui_query(query)
 
-logger.info(f"DB GUIDE LOADED: {len(database_guida)} chars")
+                tipo_grafico= call.args.get(
+                    "tipo_grafico_consigliato"
+                )
 
-# =========================
-# 🧠 SYSTEM PROMPT
-# =========================
-SYSTEM_PROMPT = f"""
-Se il messaggio riguarda un ordine del database:
-- DEVI chiamare esegui_query
-- NON inventare dati
-- SOLO SQL SELECT
+                asse_x= call.args.get("asse_x")
+                asse_y= call.args.get("asse_y")
 
-Usa guida DB: {len(database_guida)} chars
-"""
+                response=chat.send_message(
+                    types.Part.from_function_response(
+                        name="esegui_query",
+                        response={"result": risultato},
+                    )
+                )
 
-# =========================
-# 🛠 TOOLS
-# =========================
-TOOLS = [{
-    "function_declarations": [{
-        "name": "esegui_query",
-        "description": "Esegue query SQL PostgreSQL",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "query": {"type": "string"},
-                "tipo_grafico_consigliato": {"type": "string"},
-                "asse_x": {"type": "string"},
-                "asse_y": {"type": "string"}
-            },
-            "required": ["query"]
-        }
+
+                asse_x = asse_x.split(".")[-1] if asse_x else None
+                asse_y = asse_y.split(".")[-1] if asse_y else None
+                return {
+
+                    "response": response.text,
+
+                    # nuovi campi
+                    "chart": {
+                        "enabled": bool(tipo_grafico),
+
+                        "type": (
+                            tipo_grafico.replace(" chart", "")
+                            if tipo_grafico
+                            else None
+                        ),
+
+                        "xAxis": asse_x,
+                        "yAxis": asse_y,
+                        "data": risultato if risultato else []
+                    }
+                }
+        if getattr(part, "text", None):
+            return {
+                "response": part.text,
+                "chart": {
+                    "enabled": False
+                }
+            }
+                
+
+
+        
+        
+
+DATABASE_URL=os.getenv("DATABASE_URL") #RECUPERTO URL
+
+def esegui_query(query: str):
+    query_lower = query.lower()
+    if not query_lower.strip().startswith("select"):
+        return "Solo query SELECT consentite."
+    try:
+        conn = psycopg2.connect(DATABASE_URL) #APERTURA CONNESSIONE
+        cursor = conn.cursor()
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        columns = [desc[0] for desc in cursor.description]
+        
+        # Lista di dizionari (per il grafico)
+        result_dicts = []
+        for row in rows:
+            record = {}
+            for col, val in zip(columns, row):
+                if hasattr(val, 'isoformat'):
+                    record[col] = val.isoformat()
+                elif isinstance(val, (int, float)):
+                    record[col] = float(val)
+                else:
+                    record[col] = val
+            result_dicts.append(record)
+        
+        return result_dicts  
+        
+    except Exception as e:
+        return f"Errore SQL: {e}"
+    finally:
+        conn.close()
+
+SYSTEM_PROMT= f"""
+    Se il messaggio che ricevi riguarda un ordine del database:
+    - DEVI OBBLIGATORIAMENTE chiamare la funzione esegui_query
+    - NON puoi rispondere senza usare la funzione
+    - NON inventare dati
+    - genera SOLO query SQL SELECT valide
+                            
+    Usa questa guida del Database: {database_guida}
+    
+    Se la richiesta rigurda un ordine:
+    - Inizia con : "Salve Gentile Cliente..."
+    - Chiudi con : Assistenza di UniLira , Tel: +39 123231312 
+   
+    Se invece la richiesta NON rigurda un ordine rispondi con:
+    - Rispondi Normalmente senza Gentile Cliente e senza Assistenza UniLira
+
+    In OGNI risposta rispondi in modo professionale:
+    - Rispondi anche alle richieste nelle altre lingue, usando la lingua utilizzata dal mittente
+    
+    In OGNI risposta a dei GRAFICI rispondi con:
+    - Il grafico è riportato sotto
+    - Ecco il grafico
+    
+    """
+
+TOOLS=[ {
+        "function_declarations": [
+            {
+                "name": "esegui_query",
+                "description": "Esegue query SQL PostgreSQL e può suggerire grafici",
+                "parameters": {
+                    "type": "OBJECT",
+
+                    "properties": {
+
+                        "query": {
+                            "type": "STRING",
+                            "description": "Query SQL SELECT PostgreSQL"
+                        },
+
+                        "tipo_grafico_consigliato": {
+                            "type": "STRING",
+                            "enum": [
+                                "line chart",
+                                "pie chart",
+                                "bar chart"
+                            ],
+
+                            "description": "Grafico consigliato"
+                        },
+
+                        "asse_x" : {
+                            "type": "STRING",
+                            "description": "Campo Asse x"
+                        },
+
+                        "asse_y" : {
+                            "type": "STRING",
+                            "description": "Campo Asse y"
+                        }
+
+                    },
+                    "required": ["query"]
+                }
+            }
+        ]
     }]
-}]
 
-# =========================
-# 🤖 MODEL INIT
-# =========================
-MODEL_NAME = "gemini-2.5-flash"
-
-logger.info("========== MODEL DEBUG ==========")
-logger.info(f"MODEL USED: {MODEL_NAME}")
-logger.info(f"TOOLS ENABLED: {json.dumps(TOOLS, indent=2)}")
-
-model = genai.GenerativeModel(
-    model_name=MODEL_NAME,
-    tools=TOOLS,
-    system_instruction=SYSTEM_PROMPT
+GEMINI_CONFIG = types.GenerateContentConfig(
+    system_instruction=SYSTEM_PROMT,
+    tools=[types.Tool(function_declarations=TOOLS[0]["function_declarations"])],
+    automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
 )
 
-# =========================
-# 🚀 FASTAPI
-# =========================
-app = FastAPI()
 
-app.add_middleware(
+
+app = FastAPI() #CREAZIONE CANALE COMUNICAZIONE
+
+app.add_middleware( #PERMESSI PER LA COMUNICAZIONE
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
@@ -102,115 +196,42 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-sessions = {}
+sessions={}
 
-# =========================
-# 📩 REQUEST MODEL
-# =========================
-class ChatRequest(BaseModel):
+class ChatRequest(BaseModel): #RICHESTE CHE IL MESSAGGIO DEVE RISPETTARE
     message: str
     user_id: str
 
-# =========================
-# 🏠 HEALTH CHECK
-# =========================
 @app.get("/")
 def home():
     return {"status": "Chatbot Online"}
 
-# =========================
-# 🧠 MAIN DEBUG ROUTE
-# =========================
-@app.post("/chat")
+
+@app.post("/chat") #CREZIONE DELLA PORTA PRIVATA CHAT 
 async def chat(req: ChatRequest):
+    
+    user_id=req.user_id
+    if user_id not in sessions: #salvo le sessioni, cosi ogni utente ha il suo contesto
+        sessions[user_id]=client.chats.create(model="gemini-2.5-flash", config=GEMINI_CONFIG)
+    
+    chat = sessions[user_id]
 
-    logger.info("========================================")
-    logger.info("NEW REQUEST RECEIVED")
-    logger.info(f"user_id: {req.user_id}")
-    logger.info(f"message: {req.message}")
+    response = chat.send_message(req.message)
+    
+    print(response.candidates[0].content.parts)
 
-    try:
-        # -------------------------
-        # SESSION DEBUG
-        # -------------------------
-        if req.user_id not in sessions:
-            logger.info("CREATING NEW SESSION")
-            sessions[req.user_id] = model.start_chat(
-                enable_automatic_function_calling=False
-            )
-        else:
-            logger.info("USING EXISTING SESSION")
+    #pulizia  risposta
 
-        chat = sessions[req.user_id]
 
-        logger.info("SENDING MESSAGE TO GEMINI...")
+    return Invio_risposta(response,chat)
 
-        response = chat.send_message(req.message)
 
-        # -------------------------
-        # RAW RESPONSE DEBUG
-        # -------------------------
-        logger.info("RESPONSE RECEIVED")
-        logger.info(f"response type: {type(response)}")
 
-        try:
-            logger.debug("FULL RESPONSE DUMP:")
-            logger.debug(response)
-        except Exception as e:
-            logger.warning(f"Could not dump full response: {e}")
 
-        # -------------------------
-        # PARTS DEBUG
-        # -------------------------
-        if response.candidates:
-            for i, candidate in enumerate(response.candidates):
-                logger.info(f"Candidate {i}")
 
-                if hasattr(candidate, "content"):
-                    for j, part in enumerate(candidate.content.parts):
-                        logger.info(f"  Part {j}: {part}")
 
-                        if hasattr(part, "text"):
-                            logger.info(f"    TEXT: {part.text}")
 
-                        if hasattr(part, "function_call"):
-                            logger.info("    FUNCTION CALL DETECTED")
-                            logger.info(f"    NAME: {part.function_call.name}")
-                            logger.info(f"    ARGS: {part.function_call.args}")
 
-        # -------------------------
-        # RETURN PROCESSING
-        # -------------------------
-        result = Invio_risposta(response, chat)
 
-        logger.info("FINAL RESPONSE GENERATED SUCCESSFULLY")
-        logger.info("========================================")
 
-        return result
 
-    except Exception as e:
-        logger.error("🔥 ERROR OCCURRED DURING GEMINI CALL")
-
-        logger.error("TYPE:")
-        logger.error(type(e))
-
-        logger.error("STRING:")
-        logger.error(str(e))
-
-        logger.error("TRACEBACK:")
-        logger.error(traceback.format_exc())
-
-        # Try extracting HTTP/grpc metadata if available
-        if hasattr(e, "metadata"):
-            logger.error("METADATA:")
-            logger.error(e.metadata)
-
-        if hasattr(e, "response"):
-            logger.error("RAW ERROR RESPONSE:")
-            logger.error(e.response)
-
-        return {
-            "error": str(e),
-            "type": str(type(e)),
-            "trace": traceback.format_exc()
-        }
