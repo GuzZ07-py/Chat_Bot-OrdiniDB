@@ -174,7 +174,7 @@ TOOLS=[ {
         ]
     }]
 
-model = genai.GenerativeModel(model_name="gemini-2.5-pro",
+model = genai.GenerativeModel(model_name="gemini-3.5-flash",
                               tools=TOOLS,
                               system_instruction=SYSTEM_PROMT)
 
