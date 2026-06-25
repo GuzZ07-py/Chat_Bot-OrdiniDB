@@ -4,6 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 import google.generativeai as genai
 import os
 import psycopg2
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 # Recupero chiave dalle varibile impostate su Render,come anche per le credenziali per accedere al database su Supabase
 api_key = os.getenv("GEMINI_API_KEY")
