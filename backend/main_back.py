@@ -174,7 +174,7 @@ TOOLS=[ {
         ]
     }]
 
-model = genai.GenerativeModel(model_name="gemini-2.5-flash",
+model = genai.GenerativeModel(model_name="gemini-1.5-flash",
                               tools=TOOLS,
                               system_instruction=SYSTEM_PROMT)
 
@@ -211,8 +211,6 @@ async def chat(req: ChatRequest):
     chat = sessions[user_id]
 
     response = chat.send_message(req.message)
-    
-    
     
     print(response.candidates[0].content.parts)
 
