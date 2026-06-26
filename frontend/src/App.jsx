@@ -120,7 +120,7 @@ export default function App() {
     setIsTyping(true);
 
     try {
-      const res = await fetch("https://chat-bot-ordinidb-2.onrender.com/chat", {
+      const res = await fetch("https://staging-bubble.com/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: inputcorrente, user_id: userid }),
